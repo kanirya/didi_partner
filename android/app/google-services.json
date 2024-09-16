@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "1012001851655",
+    "firebase_url": "https://didirooms-258f6-default-rtdb.firebaseio.com",
+    "project_id": "didirooms-258f6",
+    "storage_bucket": "didirooms-258f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012001851655:android:bc052dcddd981dac961da2",
+        "android_client_info": {
+          "package_name": "com.example.didi_partner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkLuy432CHnmYH_L5Bd285NBeSXro7Pnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012001851655:android:98ac5eed33105623961da2",
+        "android_client_info": {
+          "package_name": "com.example.didi_room"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkLuy432CHnmYH_L5Bd285NBeSXro7Pnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012001851655:android:d69da76911aa10ed961da2",
+        "android_client_info": {
+          "package_name": "com.example.didipartner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkLuy432CHnmYH_L5Bd285NBeSXro7Pnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012001851655:android:e8d9514cc85e1b94961da2",
+        "android_client_info": {
+          "package_name": "com.example.didirooms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkLuy432CHnmYH_L5Bd285NBeSXro7Pnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012001851655:android:f6f8ec977883f69b961da2",
+        "android_client_info": {
+          "package_name": "com.example.didirooms_web_p"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkLuy432CHnmYH_L5Bd285NBeSXro7Pnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
