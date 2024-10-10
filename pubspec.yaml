@@ -44,6 +44,9 @@ dependencies:
   cloud_firestore: ^5.4.1
   firebase_storage: ^12.3.0
   flutter_svg: ^2.0.10+1
+  provider: ^6.1.2
+  carousel_slider: ^5.0.0
+  font_awesome_flutter: ^10.7.0
   
 
 dev_dependencies:

@@ -1,6 +1,13 @@
-import 'package:didipartner/Auth/List_proterty.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+
+import '../../utils/utils.dart';
+import '../../view_model/provider/provider.dart';
+import '../screens/Home_screen.dart';
+import 'List_proterty.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,12 +16,15 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   bool _isPasswordVisible = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
-
+   bool load=false;
 
   @override
   void initState() {
@@ -47,20 +57,24 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   void dispose() {
     _animationController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             Container(
-              width: 70,
+              width: 130,
               child: SvgPicture.asset(
                 'assets/images/DIDIpartner.svg',
-                height: 24,
+                height: 50,
               ),
             ),
           ],
@@ -68,7 +82,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ListProterty()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ListProterty()));
             },
             child: Text(
               'List property',
@@ -77,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           ),
           IconButton(
             onPressed: () {
-              // Handle language change
+
             },
             icon: Icon(Icons.language, color: Colors.black),
           ),
@@ -150,9 +165,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        // Handle login button press
-                      },
+                      onPressed:
+                      (){verifyEmail(context);}
+
+                      ,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
                         padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -161,10 +177,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         ),
                       ),
                       child: Center(
-                        child: Text(
+                        child:isLoading==true?CircularProgressIndicator(color: Colors.white,) :Text(
                           'Login',
-                          style:
-                          TextStyle(fontSize: 16.0, color: Colors.white),
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                       ),
                     ),
@@ -183,6 +198,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     ),
                     SizedBox(height: 16.0),
                     TextField(
+                      controller: _passwordController,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -210,8 +226,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       ),
                     ),
                     SizedBox(height: 16.0),
-
                     TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email Id / Phone Number',
                         focusedBorder: OutlineInputBorder(
@@ -225,9 +241,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             horizontal: 16.0, vertical: 16.0),
                       ),
                     ),
-
-
-
                     SizedBox(height: 24.0),
                     Text(
                       'Enter the registered email address or phone number associated with us',
@@ -247,7 +260,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -257,4 +269,62 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       ),
     );
   }
-}
+
+
+
+
+
+
+void   verifyEmail(BuildContext context) {
+
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+
+    print('Starting verifyEmail');  // Debugging Step 1
+
+    ap.signInWithEmail(
+      context: context,
+      email: _emailController.text.toString(),
+      password: _passwordController.text.toString(),
+      onSuccess: () {
+        print('Sign-in successful, checking if user exists');  // Debugging Step 2
+
+        ap.checkExistingUser().then((exists) async {
+          if (exists) {
+            print('User exists in Firestore, fetching data');  // Debugging Step 3
+            // Fetch data from Firestore
+            ap.getDataFromFireStore().then(
+                  (value) {
+                // Save data locally in SharedPreferences
+                ap.saveOwnerDataToSP().then(
+                      (value) {
+                    print('Data saved in SharedPreferences, setting sign-in state');  // Debugging Step 4
+                    // Set sign-in state
+                    ap.setSignIn().then(
+                          (value) {
+                        print('Sign-in state set, navigating to home screen');  // Debugging Step 5
+                        // Navigate to home screen
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
+                              (route) => false,
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            );
+          } else {
+            print('User does not exist in Firestore');  // Debugging Step 6
+            showSnackBar(context, "User does not exist in Firestore.");
+          }
+        }).catchError((error) {
+          print('Error while checking user existence: $error');  // Debugging Step 7
+        });
+      },
+    );
+  }
+
+ }
